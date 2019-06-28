@@ -1,0 +1,10 @@
+﻿<Application x:Class="TwitterApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TwitterApp"
+             xmlns:cnv ="clr-namespace:TwitterApp.Helpers"
+             LoadCompleted="Application_LoadCompleted">
+    <Application.Resources>
+        <cnv:AgoConverter x:Key="AgoConverter" />
+    </Application.Resources>
+</Application>

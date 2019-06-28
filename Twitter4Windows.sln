@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterApp", "TwitterApp\TwitterApp.csproj", "{616AB495-3BB0-4681-823B-43082741AE26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{616AB495-3BB0-4681-823B-43082741AE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616AB495-3BB0-4681-823B-43082741AE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616AB495-3BB0-4681-823B-43082741AE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616AB495-3BB0-4681-823B-43082741AE26}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{616AB495-3BB0-4681-823B-43082741AE26} = {A724F4BD-E387-462A-BEA8-057867F1C614}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F43432FD-49E9-4D69-AF7F-A2EF9AE4A21D}
+	EndGlobalSection
+EndGlobal

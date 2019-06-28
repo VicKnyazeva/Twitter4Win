@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="TwitterApp.PostsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TwitterApp"
+             xmlns:vm="clr-namespace:TwitterApp.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" SnapsToDevicePixels="True">
+
+    <d:DesignProperties.DataContext>
+        <vm:MainViewModel />
+    </d:DesignProperties.DataContext>
+
+    <UserControl.Resources>
+        <Style x:Key="authorName">
+            <Setter Property="TextBlock.Foreground" Value="#4E5F6F" />
+            <Setter Property="TextBlock.FontSize" Value="14px" />
+            <Setter Property="TextBlock.FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="authorNick">
+            <Setter Property="TextBlock.Foreground" Value="#0083fe" />
+            <Setter Property="TextBlock.FontSize" Value="12px" />
+        </Style>
+        <Style x:Key="postedTime" BasedOn="{StaticResource ResourceKey=authorNick}">
+            <Setter Property="TextBlock.Foreground" Value="#a2aeba" />
+        </Style>
+        <Style x:Key="postedText">
+            <Setter Property="TextBlock.Foreground" Value="#8998a5" />
+            <Setter Property="TextBlock.FontSize" Value="13px" />
+        </Style>
+        <Style x:Key="postLink">
+            <Setter Property="TextBlock.Foreground" Value="#0083fe" />
+            <Setter Property="TextBlock.FontSize" Value="13px" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="38"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" CornerRadius="14,14,0,0" Background="White">
+            <ListBox ItemsSource="{Binding Path=PostsSource}" Margin="0,14,0,0" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border  Padding="0,17,0,23" BorderBrush="#e8e9e9" BorderThickness="0,0,0,1">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Grid.RowSpan="2" Height="40" Width="40" Source="{Binding Path=Author.ProfileImageUrl}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="28,0,0,0">
+                                    <Image.Clip>
+                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                    </Image.Clip>
+                                </Image>
+                                <Border Grid.Column="0" Grid.RowSpan="2" Height="40" Width="40" CornerRadius="40" BorderThickness="1" BorderBrush="Silver"
+                                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="28,0,0,0">
+                                </Border>
+                                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,4,0,0">
+                                    <TextBlock Style="{StaticResource ResourceKey=authorName}" Text="{Binding Path=AuthorName}"  Margin="0,0,14,0" />
+                                    <TextBlock Style="{StaticResource ResourceKey=authorNick}" Text="{Binding Path=AuthorNick}" />
+                                </TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" TextAlignment="Right" Margin="0,4,20,1">
+                                    <TextBlock Style="{StaticResource ResourceKey=postedTime}" Text="{Binding Path=CreatedDate, Converter={StaticResource AgoConverter}}" />
+                                 </TextBlock>
+                                <TextBlock Style="{StaticResource ResourceKey=postedText}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,4,0,0"
+                                           Text="{Binding Path=Text}"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Left" HorizontalAlignment="Stretch"
+                                           Loaded="TextBlock_Loaded" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Border Grid.Row="1" Background="#F8F9F9" BorderBrush="#E8E9E9" BorderThickness="0,1,0,0" CornerRadius="0,0,14,14">
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#0083FF" FontSize="13px" FontWeight="Bold" Background="Transparent" BorderThickness="0">Загрузить другие записи
+            </Button>
+        </Border>
+    </Grid>
+</UserControl>
