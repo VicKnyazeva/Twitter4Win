@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,26 +19,13 @@ namespace TwitterApp
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GetServiceData();
+            var vm = await PreloadServiceData();
+            GetServiceData(vm);
         }
 
-        //private Task<IEnumerable<TwitterPostViewModel>> LoadTweets(int? count = null)
-        //{
-        //    return Task.Run<IEnumerable<TwitterPostViewModel>>(() =>
-        //    {
-        //        Task.Delay(2000).Wait();
-        //        IEnumerable<TwitterPostViewModel> result = TwitterHelper.GetTweets();
-        //        if (count.HasValue && count.Value > 0)
-        //        {
-        //            result = result.Take(count.Value);
-        //        }
-        //        return result;
-        //    });
-        //}
-
-        private async void GetServiceData()
+        private async Task<MainViewModel> PreloadServiceData()
         {
             TaskScheduler uiTaskSheduler = TaskScheduler.FromCurrentSynchronizationContext();
             MainViewModel vm = null;
@@ -83,14 +71,29 @@ namespace TwitterApp
                     {
                         var tweetsCollection = loadTask.Result.Take(10);
 
-                        foreach (var tw in tweetsCollection)
+                        using (var connection = DbHelper.CreateConnection())
                         {
-                            vm.Posts.Add(new TwitterPostViewModel
+                            connection.Open();
+                            
+                            connection.CleanupContent();
+
+                            foreach (var tw in tweetsCollection)
                             {
-                                Author = tw.User,
-                                CreatedDate = tw.CreatedDate,
-                                Text = tw.Text
-                            });
+                                int? userId = connection.FindUser(tw.User.UserName);
+                                if (!userId.HasValue)
+                                {
+                                    userId = connection.InsertUser(
+                                        tw.User.UserName,
+                                        tw.User.UserScreenName,
+                                        tw.User.FavouritesCount,
+                                        tw.User.FollowersCount,
+                                        tw.User.FriendsCount,
+                                        tw.User.Description,
+                                        tw.User.ProfileImageUrl);
+                                }
+
+                                int postId = connection.InsertPost(userId.Value, tw.Text, tw.CreatedDate, tw.RetweetCount);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -119,6 +122,84 @@ namespace TwitterApp
                 });
 
                 await Task.WhenAll(loadTrends, loadTweets, loadUserInfo); // три задачи в параллель!!!
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            if (exception == null)
+            {
+                return vm;
+            }
+            else
+            {
+                string error;
+                if (exception is TwitterException)
+                {
+                    error = string.Format("Произошло специфическое исключение {0}:\n\t{1}", exception.GetType().Name, exception.Message);
+                }
+                else
+                {
+                    error = string.Format("Произошло исключение {0}:\n\t{1}", exception.GetType().Name, exception.Message);
+                }
+                MessageBox.Show(error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
+            return null;
+        }
+
+        private void GetServiceData(MainViewModel vm)
+        {
+            Exception exception = null;
+            try
+            {
+                using (var connection = DbHelper.CreateConnection())
+                {
+                    connection.Open();
+
+                    var command = connection.CreateCommand();
+                    command.CommandText = @"
+SELECT TOP (10) 
+    [t0].[Id],
+    [t0].[Text], 
+	[t0].[CreatedDate], 
+	[t0].[RetweetCount], 
+	[t0].[AuthorId], 
+	[t1].[UserName] AS [AuthorUserName], 
+	[t1].[UserScreenName] AS[AuthorUserScreenName],
+    [t1].[ProfileImageUrl] AS [AuthorProfileImageUrl]
+FROM[Posts] AS[t0]
+INNER JOIN[Users] AS[t1] ON[t1].[Id] = [t0].[AuthorId]
+ORDER BY[t0].[CreatedDate] DESC";
+
+                    Dictionary<int, TwitterUserViewModel> authors = new Dictionary<int, TwitterUserViewModel>();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TwitterUserViewModel author;
+                            int authorId = reader.GetInt32(4);
+                            if (!authors.TryGetValue(authorId, out author))
+                            {
+                                author = new TwitterUserViewModel()
+                                {
+                                    UserName = reader.GetString(5),
+                                    UserScreenName = reader.GetString(6),
+                                    ProfileImageUrl = reader.GetString(7)
+                                };
+                                authors.Add(authorId, author);
+                            }
+                            vm.Posts.Add(new TwitterPostViewModel
+                            {
+                                Author = author,
+                                CreatedDate = reader.GetDateTime(2),
+                                Text = reader.GetString(1)
+                            });
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

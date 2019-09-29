@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\AgoConverter.cs" />
+    <Compile Include="Helpers\DbHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\TwitterException.cs" />
     <Compile Include="Helpers\TwitterHelper.cs" />
