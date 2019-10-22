@@ -13,8 +13,8 @@ namespace TwitterApp.Helpers
 {
     static class TwitterHelper
     {
-        const string consumerKey = "ebkfRcZj1xkyENq0iBK8JdsQQ";
-        const string consumerSecret = "2c5NiLZZGdUX5PR9jYrLoUhGhgGdj8KJ0Vj6IpS1ZmFxATu96c";
+        const string consumerKey = "ZY4BFJOOziWVfhK7d8rvBx0Fu";
+        const string consumerSecret = "mUKFkJcmf9hRgYxusbvBJ66nKelYd8oqZc79OVXT3BXg774Ryb";
 
         static TwitterService service;
 
@@ -45,7 +45,6 @@ namespace TwitterApp.Helpers
 
                 if (result == true)
                 {
-                    //RF
                     var access = service.GetAccessToken(requestToken, loginDialog.Verifier.Text);
                     service.AuthenticateWith(access.Token, access.TokenSecret);
                     return true;
@@ -99,11 +98,6 @@ namespace TwitterApp.Helpers
                     {
                         result.Add(Convert(src));
                     }
-
-                    //result.Sort((a, b) =>
-                    //{
-                    //    return -DateTime.Compare(a.CreatedDate, b.CreatedDate);
-                    //});
                 }
                 return result;
             }

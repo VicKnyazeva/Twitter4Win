@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using TwitterApp.ViewModels;
+using TwitterApp.EFClasses;
 using TwitterApp.Helpers;
-using System.Globalization;
-using System.Threading;
 
 namespace TwitterApp
 {
@@ -20,6 +13,11 @@ namespace TwitterApp
         {
             try
             {
+                using (var db = new TwitterContext())
+                {
+                    db.Database.CreateIfNotExists();
+                }
+
                 bool initResult = TwitterHelper.Init();
                 if (initResult == true)
                 {

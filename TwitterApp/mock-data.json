@@ -1,0 +1,196 @@
+{
+  "Trends": [
+    { "Name": "#trend0" },
+    { "Name": "#trend1" },
+    { "Name": "#trend2" },
+    { "Name": "#trend3" },
+    { "Name": "#trend4" },
+    { "Name": "#trend5" },
+    { "Name": "#trend6" },
+    { "Name": "#trend7" },
+    { "Name": "#trend8" },
+    { "Name": "#trend9" }
+  ],
+  "Posts": [
+    {
+      "Author": {
+        "UserName": "Stanford University",
+        "UserScreenName": "@Stanford",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Stanford University.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Stanford University",
+      "AuthorNick": "@Stanford",
+      "Text": "RT @StanfordFball: 𝘼𝙇𝙇 𝙍𝙄𝙂𝙃𝙏 𝙉𝙊𝙒‼️\n\n#GoStanford https://t.co/zR8VQG737j",
+      "CreatedDate": "2019-09-29T02:43:35",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Learn how to create your own photo-sharing social media platform with @VisualStudio Tools for Xamarin and #Azure. W… https://t.co/4UGw11bxRw",
+      "CreatedDate": "2019-09-28T22:41:01",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Bring vision, speech, language, and knowledge capabilities to your apps with #Azure Cognitive Services. Start learn… https://t.co/bOs3I4yZgN",
+      "CreatedDate": "2019-09-28T21:13:02",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Easily add intelligent features to your #apps to help them stand out. Get the e-book: https://t.co/el5VHDrxa3 https://t.co/ixnjnnGJeM",
+      "CreatedDate": "2019-09-28T20:22:02",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "The Santa Clara #IoTinActionMS event on 10/10/19 is your chance to gain insight into the latest #IoT topics and lea… https://t.co/62i3JiT4EY",
+      "CreatedDate": "2019-09-28T19:33:01",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Download Effective DevOps from O’Reilly to find out how to build a strong and sustainable #AzureDevOps culture with… https://t.co/nj2aQ2ZtRc",
+      "CreatedDate": "2019-09-28T18:21:00",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "RT @msftmfg: Commercial applications of #IoT are quietly transforming industry, unlocking significant value for companies and their custome…",
+      "CreatedDate": "2019-09-28T17:16:27",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Build next-generation security operations with cloud and #AI. Start using Azure Sentinel free:\nhttps://t.co/NWU158dIGY",
+      "CreatedDate": "2019-09-28T17:12:00",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft",
+        "UserScreenName": "@Microsoft",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft.png",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft",
+      "AuthorNick": "@Microsoft",
+      "Text": "RT @minecraftearth: Time to get your phones charged and ready! Minecraft Earth is almost here, with early access rolling out to select coun…",
+      "CreatedDate": "2019-09-28T17:06:11",
+      "RetweetCount": 0,
+      "User": null
+    },
+    {
+      "Author": {
+        "UserName": "Microsoft Azure",
+        "UserScreenName": "@Azure",
+        "Description": null,
+        "FollowersCount": 0,
+        "FavouritesCount": 0,
+        "FriendsCount": 0,
+        "ProfileImageUrl": "C:\\_work\\Модуль 14\\Twitter4Win\\TwitterApp\\Images\\Microsoft Azure.jpg",
+        "CreatedDate": "0001-01-01T00:00:00"
+      },
+      "AuthorName": "Microsoft Azure",
+      "AuthorNick": "@Azure",
+      "Text": "Take advantage of Azure #VMs to better manage your infrastructure, DevOps tools, and pipelines. Download the infobr… https://t.co/KgPtAux315",
+      "CreatedDate": "2019-09-28T16:33:00",
+      "RetweetCount": 0,
+      "User": null
+    }
+  ]
+}

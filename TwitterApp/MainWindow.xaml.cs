@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TwitterApp.EFClasses;
 using TwitterApp.Helpers;
 using TwitterApp.ViewModels;
+using System.Data.Entity.Infrastructure;
 
 namespace TwitterApp
 {
@@ -25,16 +26,25 @@ namespace TwitterApp
             GetServiceData(vm);
         }
 
+        class MockData
+        {
+            public TwitterTrendViewModel[] Trends { get; set; }
+
+            public TwitterPostViewModel[] Posts { get; set; }
+        }
+
         private async Task<MainViewModel> PreloadServiceData()
         {
             TaskScheduler uiTaskSheduler = TaskScheduler.FromCurrentSynchronizationContext();
             MainViewModel vm = null;
             Exception exception = null;
+
             try
             {
                 vm = new MainViewModel(true);
 
-                var loadTrends = TwitterHelper.GetTrendsAsync().ContinueWith(loadTask =>
+                var loadTrends = TwitterHelper.GetTrendsAsync()
+                    .ContinueWith(loadTask =>
                 {
                     if (exception != null) return;
 
@@ -43,15 +53,23 @@ namespace TwitterApp
 
                     try
                     {
-                        // Урок 2. Применить LINQ для фильтрации трендов, начинающихся на #, ...
-                        //
                         var trendsCollection = loadTask.Result
                             .Where(trend => trend.Name.StartsWith("#"))
                             .Take<TwitterTrendViewModel>(10);
 
-                        foreach (var t in trendsCollection)
+                        using (var db = new TwitterContext())
                         {
-                            vm.Trends.Add(new TwitterTrendViewModel { Name = t.Name });
+                            foreach (var t in trendsCollection)
+                            {
+                                if (db.Trends.Any(tt => tt.TrendName == t.Name))
+                                    continue;
+
+                                db.Trends.Add(new TwitterTrend
+                                {
+                                    TrendName = t.Name
+                                });
+                                db.SaveChanges();
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -60,7 +78,10 @@ namespace TwitterApp
                     }
                 });
 
-                var loadTweets = TwitterHelper.GetTweetsAsync().ContinueWith(loadTask =>
+
+                var loadTweets = TwitterHelper.GetTweetsAsync()
+
+                .ContinueWith(loadTask =>
                 {
                     if (exception != null) return;
 
@@ -71,29 +92,51 @@ namespace TwitterApp
                     {
                         var tweetsCollection = loadTask.Result.Take(10);
 
-                        using (var connection = DbHelper.CreateConnection())
+                        using (var db = new TwitterContext())
                         {
-                            connection.Open();
-                            
-                            connection.CleanupContent();
-
-                            foreach (var tw in tweetsCollection)
+                            using (var transaction = db.Database.BeginTransaction())
                             {
-                                int? userId = connection.FindUser(tw.User.UserName);
-                                if (!userId.HasValue)
+                                try
                                 {
-                                    userId = connection.InsertUser(
-                                        tw.User.UserName,
-                                        tw.User.UserScreenName,
-                                        tw.User.FavouritesCount,
-                                        tw.User.FollowersCount,
-                                        tw.User.FriendsCount,
-                                        tw.User.Description,
-                                        tw.User.ProfileImageUrl);
-                                }
+                                    var users = db.Users.ToDictionary(u => u.UserName);
+                                    foreach (var tw in tweetsCollection)
+                                    {
+                                        TwitterUser user;
+                                        if (!users.TryGetValue(tw.User.UserName, out user))
+                                        {
+                                            user = new TwitterUser()
+                                            {
+                                                UserName = tw.User.UserName,
+                                                UserScreenName = tw.User.UserScreenName,
+                                                FavouritesCount = tw.User.FavouritesCount,
+                                                FollowersCount = tw.User.FollowersCount,
+                                                FriendsCount = tw.User.FriendsCount,
+                                                Description = tw.User.Description,
+                                                ProfileImageUrl = tw.User.ProfileImageUrl
+                                            };
+                                            users.Add(tw.User.UserName, user);
+                                            db.Users.Add(user);
+                                        }
 
-                                int postId = connection.InsertPost(userId.Value, tw.Text, tw.CreatedDate, tw.RetweetCount);
+                                        user.Posts.Add(
+                                            new TwitterPost
+                                            {
+                                                Text = tw.Text,
+                                                CreatedDate = tw.CreatedDate,
+                                                RetweetCount = tw.RetweetCount
+                                            });
+                                    }
+
+                                    db.SaveChanges();
+                                    transaction.Commit();
+                                }
+                                catch
+                                {
+                                    transaction.Rollback();
+                                    throw;
+                                }
                             }
+
                         }
                     }
                     catch (Exception ex)
@@ -102,7 +145,8 @@ namespace TwitterApp
                     }
                 }, uiTaskSheduler);
 
-                var loadUserInfo = TwitterHelper.GetUserInfoAsync().ContinueWith(loadTask =>
+                var loadUserInfo = TwitterHelper.GetUserInfoAsync()
+                    .ContinueWith(loadTask =>
                 {
                     if (exception != null) return;
 
@@ -154,50 +198,45 @@ namespace TwitterApp
             Exception exception = null;
             try
             {
-                using (var connection = DbHelper.CreateConnection())
+                Dictionary<int, TwitterUserViewModel> authors = new Dictionary<int, TwitterUserViewModel>();
+                using (var db = new TwitterContext())
                 {
-                    connection.Open();
-
-                    var command = connection.CreateCommand();
-                    command.CommandText = @"
-SELECT TOP (10) 
-    [t0].[Id],
-    [t0].[Text], 
-	[t0].[CreatedDate], 
-	[t0].[RetweetCount], 
-	[t0].[AuthorId], 
-	[t1].[UserName] AS [AuthorUserName], 
-	[t1].[UserScreenName] AS[AuthorUserScreenName],
-    [t1].[ProfileImageUrl] AS [AuthorProfileImageUrl]
-FROM[Posts] AS[t0]
-INNER JOIN[Users] AS[t1] ON[t1].[Id] = [t0].[AuthorId]
-ORDER BY[t0].[CreatedDate] DESC";
-
-                    Dictionary<int, TwitterUserViewModel> authors = new Dictionary<int, TwitterUserViewModel>();
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
+                    var trends =
+                        from t in db.Trends
+                        select new TwitterTrendViewModel()
                         {
-                            TwitterUserViewModel author;
-                            int authorId = reader.GetInt32(4);
-                            if (!authors.TryGetValue(authorId, out author))
+                            Name = t.TrendName
+                        };
+
+                    foreach (var trend in trends.Take(10))
+                        vm.Trends.Add(trend);
+
+                    IQueryable<TwitterPost> allPosts = db.Posts.Include(nameof(TwitterPost.Author));
+
+                    var posts =
+                        from p in allPosts
+                        orderby p.CreatedDate descending, p.Id
+                        select p;
+
+                    foreach (var post in posts.Take(10).ToArray())
+                    {
+                        TwitterUserViewModel author;
+                        if (!authors.TryGetValue(post.AuthorId, out author))
+                        {
+                            author = new TwitterUserViewModel()
                             {
-                                author = new TwitterUserViewModel()
-                                {
-                                    UserName = reader.GetString(5),
-                                    UserScreenName = reader.GetString(6),
-                                    ProfileImageUrl = reader.GetString(7)
-                                };
-                                authors.Add(authorId, author);
-                            }
-                            vm.Posts.Add(new TwitterPostViewModel
-                            {
-                                Author = author,
-                                CreatedDate = reader.GetDateTime(2),
-                                Text = reader.GetString(1)
-                            });
+                                UserName = post.Author.UserName,
+                                UserScreenName = post.Author.UserScreenName,
+                                ProfileImageUrl = post.Author.ProfileImageUrl
+                            };
+                            authors.Add(post.AuthorId, author);
                         }
+                        vm.Posts.Add(new TwitterPostViewModel
+                        {
+                            Author = author,
+                            CreatedDate = post.CreatedDate,
+                            Text = post.Text
+                        });
                     }
                 }
             }
