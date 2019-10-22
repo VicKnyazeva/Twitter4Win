@@ -5,15 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TwitterApp"
       mc:Ignorable="d" 
-      Height="150" Width="270" ResizeMode="NoResize"
+      Height="480" Width="640"
       Title="Авторизация" Icon="Resources/oauth_application.png" Loaded="Window_Loaded">
 
-    <Grid>
-        <TextBox x:Name="Verifier" Margin="28,20,28,0" TextWrapping="Wrap" Text="" Padding="0,3" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
-        <Button Content="OK" HorizontalAlignment="Left" Margin="28,0,0,32" VerticalAlignment="Bottom" Width="75"
-                IsDefault="True" Click="Button_Click" Height="23"/>
-        <Button Content="Отмена" HorizontalAlignment="Right" Margin="0,0,28,32" VerticalAlignment="Bottom" Width="78" Height="23"
-                IsCancel="True"/>
-
-    </Grid>
+    <WebBrowser x:Name="browser" LoadCompleted="browser_LoadCompleted" />
 </Window>

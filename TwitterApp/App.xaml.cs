@@ -18,13 +18,9 @@ namespace TwitterApp
                     db.Database.CreateIfNotExists();
                 }
 
-                bool initResult = TwitterHelper.Init();
-                if (initResult == true)
-                {
-                    App app = new App();
-                    app.InitializeComponent();
-                    app.Run(new MainWindow());
-                }
+                App app = new App();
+                app.InitializeComponent();
+                app.Run(new LoginDialog());
             }
             catch (Exception ex)
             {

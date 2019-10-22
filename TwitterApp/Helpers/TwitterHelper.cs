@@ -18,43 +18,30 @@ namespace TwitterApp.Helpers
 
         static TwitterService service;
 
-        public static bool Init()
+        public static Uri Init(out OAuthRequestToken requestToken)
         {
-            OAuthRequestToken requestToken;
+            string errorMessage = "Не удалось выполнить запрос.";
             try
             {
                 service = new TwitterService(consumerKey, consumerSecret);
 
                 requestToken = service.GetRequestToken();
                 if (requestToken == null)
-                    throw new TwitterException("Не удалось выполнить запрос.");
+                    throw new TwitterException(errorMessage);
+
+                errorMessage = "Не удалось авторизовать приложение.";
+                return service.GetAuthorizationUri(requestToken);
             }
             catch (Exception ex)
             {
-                throw new TwitterException("Не удалось выполнить запрос.", ex);
+                throw new TwitterException(errorMessage, ex);
             }
+        }
 
-            Uri uri;
-            try
-            {
-                uri = service.GetAuthorizationUri(requestToken);
-                Process.Start(uri.ToString());
-
-                var loginDialog = new LoginDialog();
-                var result = loginDialog.ShowDialog();
-
-                if (result == true)
-                {
-                    var access = service.GetAccessToken(requestToken, loginDialog.Verifier.Text);
-                    service.AuthenticateWith(access.Token, access.TokenSecret);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new TwitterException("Не удалось авторизовать приложение.", ex);
-            }
-            return false;
+        public static void Authenticate(OAuthRequestToken requestToken, string verifier)
+        {
+            var access = service.GetAccessToken(requestToken, verifier);
+            service.AuthenticateWith(access.Token, access.TokenSecret);
         }
 
         public static TwitterUserViewModel GetUserInfo()
