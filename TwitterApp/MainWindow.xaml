@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:TwitterApp.ViewModels"
         mc:Ignorable="d"
         Title="Twitter Для Windows" Height="900" Width="978" FontFamily="Roboto" Loaded="Window_Loaded"
-        MinHeight="900" MinWidth="978" Icon="Resources/oauth_application.png" SnapsToDevicePixels="True">
+        MinHeight="900" MinWidth="978" Icon="Resources/oauth_application.png" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen">
 
     <d:DesignProperties.DataContext>
         <vm:MainViewModel />
@@ -32,4 +32,7 @@
             <local:PostsControl Background="Transparent" />
         </Border>
     </Grid>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Find" Executed="CommandBinding_Executed" />
+    </Window.CommandBindings>
 </Window>

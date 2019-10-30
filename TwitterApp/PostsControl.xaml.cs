@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 using TwitterApp.ViewModels;
 
 namespace TwitterApp
@@ -20,15 +23,25 @@ namespace TwitterApp
                 tb.Text = null;
             else
             {
-                Style linkStyle = tb.TryFindResource("postLink") as Style;
+                //Style linkStyle = tb.TryFindResource("postLink") as Style;
 
-                tb.Inlines.Add(text);
-                //tb.Inlines.Add(" -- ");
-                //tb.Inlines.Add(new Run()
-                //{
-                //    Text = "#hash", Style = linkStyle
-
-                //});
+                foreach (string part in Regex.Split(text, @"([#@]\w+)", RegexOptions.Multiline))
+                {
+                    if (part.Length > 1 && (part.StartsWith("#") || part.StartsWith("@")))
+                    {
+                        var t = new Hyperlink();
+                        {
+                            t.Inlines.Add(part);
+                            t.Command = ApplicationCommands.Find;
+                            t.CommandParameter = part;
+                        }
+                        tb.Inlines.Add(t);
+                    }
+                    else
+                    {
+                        tb.Inlines.Add(part);
+                    }
+                }
             }
         }
 

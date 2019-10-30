@@ -6,5 +6,9 @@
              LoadCompleted="Application_LoadCompleted">
     <Application.Resources>
         <cnv:AgoConverter x:Key="AgoConverter" />
+        <Style TargetType="{x:Type Hyperlink}">
+            <Setter Property="Foreground" Value="#0083FF" />
+            <Setter Property="TextDecorations" Value="None" />
+        </Style>
     </Application.Resources>
 </Application>

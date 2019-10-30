@@ -55,13 +55,16 @@
             </Border>
         </Grid>
         <TextBlock Grid.Row="4" Foreground="#4E5F6F" FontSize="18px" FontWeight="Bold" Padding="25,61,0,0">Актуальные темы</TextBlock>
-        <ListBox Grid.Row="5" Foreground="#0083FF" FontSize="14px" FontWeight="Bold" Padding="19,0,0,0" Margin="0,0,20,0" VerticalAlignment="Stretch" BorderThickness="0"
-                 ItemsSource="{Binding Path=Trends}">
-            <ListBox.ItemTemplate>
+        <ItemsControl Grid.Row="5" ItemsSource="{Binding Path=Trends}" FontSize="14px" FontWeight="Bold" TextBlock.LineHeight="21" Padding="19,3,0,0" Margin="0,0,20,0" VerticalAlignment="Stretch">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Margin="0,5,0,5" Padding="0" Text="{Binding Path=Name}" />
+                    <TextBlock Margin="0,5,0,5" Padding="0">
+                    <Hyperlink Command="ApplicationCommands.Find" CommandParameter="{Binding Path=Name}">
+                        <Run Text="{Binding Path=Name}" />
+                    </Hyperlink>
+                    </TextBlock>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

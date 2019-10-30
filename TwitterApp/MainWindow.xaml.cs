@@ -7,6 +7,7 @@ using TwitterApp.EFClasses;
 using TwitterApp.Helpers;
 using TwitterApp.ViewModels;
 using System.Data.Entity.Infrastructure;
+using System.Windows.Input;
 
 namespace TwitterApp
 {
@@ -24,6 +25,12 @@ namespace TwitterApp
         {
             var vm = await PreloadServiceData();
             GetServiceData(vm);
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            string text = e.Parameter as string;
+            ((MainViewModel)this.DataContext).SearchString = text;
         }
 
         class MockData

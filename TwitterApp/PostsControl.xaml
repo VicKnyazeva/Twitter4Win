@@ -21,6 +21,7 @@
         <Style x:Key="authorNick">
             <Setter Property="TextBlock.Foreground" Value="#0083fe" />
             <Setter Property="TextBlock.FontSize" Value="12px" />
+            <Setter Property="TextBlock.TextDecorations" Value="None" />
         </Style>
         <Style x:Key="postedTime" BasedOn="{StaticResource ResourceKey=authorNick}">
             <Setter Property="TextBlock.Foreground" Value="#a2aeba" />
@@ -73,13 +74,15 @@
                                 </Border>
                                 <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,4,0,0">
                                     <TextBlock Style="{StaticResource ResourceKey=authorName}" Text="{Binding Path=AuthorName}"  Margin="0,0,14,0" />
-                                    <TextBlock Style="{StaticResource ResourceKey=authorNick}" Text="{Binding Path=AuthorNick}" />
+                                    <Hyperlink Style="{StaticResource ResourceKey=authorNick}"
+                                               Command="ApplicationCommands.Find" CommandParameter="{Binding Path=AuthorNick}">
+                                         <Run Text="{Binding Path=AuthorNick, Mode=OneWay}" />
+                                    </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" TextAlignment="Right" Margin="0,4,20,1">
                                     <TextBlock Style="{StaticResource ResourceKey=postedTime}" Text="{Binding Path=CreatedDate, Converter={StaticResource AgoConverter}}" />
                                  </TextBlock>
                                 <TextBlock Style="{StaticResource ResourceKey=postedText}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,4,0,0"
-                                           Text="{Binding Path=Text}"
                                            TextWrapping="Wrap"
                                            TextAlignment="Left" HorizontalAlignment="Stretch"
                                            Loaded="TextBlock_Loaded" />
