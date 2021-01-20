@@ -76,7 +76,7 @@
                                     <TextBlock Style="{StaticResource ResourceKey=authorName}" Text="{Binding Path=AuthorName}"  Margin="0,0,14,0" />
                                     <Hyperlink Style="{StaticResource ResourceKey=authorNick}"
                                                Command="ApplicationCommands.Find" CommandParameter="{Binding Path=AuthorNick}">
-                                         <Run Text="{Binding Path=AuthorNick, Mode=OneWay}" />
+                                         <Run Text="{Binding Path=AuthorNick, Mode=OneWay}" /> <Run Text="{Binding Path=Id, Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" TextAlignment="Right" Margin="0,4,20,1">
@@ -93,7 +93,18 @@
             </ListBox>
         </Border>
         <Border Grid.Row="1" Background="#F8F9F9" BorderBrush="#E8E9E9" BorderThickness="0,1,0,0" CornerRadius="0,0,14,14">
-            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#0083FF" FontSize="13px" FontWeight="Bold" Background="Transparent" BorderThickness="0">Загрузить другие записи
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#0083FF" FontSize="13px" FontWeight="Bold" Background="Transparent" BorderThickness="0"
+                    Command="{Binding Path=LoadPostsCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Content" Value="Загрузка..." />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=CanLoadPosts}" Value="True">
+                                <Setter Property="Content" Value="Загрузить другие записи" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
         </Border>
     </Grid>

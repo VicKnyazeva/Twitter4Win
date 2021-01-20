@@ -86,7 +86,9 @@ namespace TwitterApp
                 });
 
 
-                var loadTweets = TwitterHelper.GetTweetsAsync()
+                var loadTweets = vm.LoadPostsAsync(uiTaskSheduler);
+#if X
+                TwitterHelper.GetTweetsAsync(40, null)// 1200112449287905280 - 1) // null)
 
                 .ContinueWith(loadTask =>
                 {
@@ -97,7 +99,7 @@ namespace TwitterApp
 
                     try
                     {
-                        var tweetsCollection = loadTask.Result.Take(10);
+                        var tweetsCollection = loadTask.Result;//.Take(10);
 
                         using (var db = new TwitterContext())
                         {
@@ -108,6 +110,9 @@ namespace TwitterApp
                                     var users = db.Users.ToDictionary(u => u.UserName);
                                     foreach (var tw in tweetsCollection)
                                     {
+                                        if (vm.PostMinId == null || vm.PostMinId.Value > tw.Id)
+                                            vm.PostMinId = tw.Id;
+
                                         TwitterUser user;
                                         if (!users.TryGetValue(tw.User.UserName, out user))
                                         {
@@ -128,6 +133,7 @@ namespace TwitterApp
                                         user.Posts.Add(
                                             new TwitterPost
                                             {
+                                                TwitterId = tw.Id,
                                                 Text = tw.Text,
                                                 CreatedDate = tw.CreatedDate,
                                                 RetweetCount = tw.RetweetCount
@@ -151,6 +157,7 @@ namespace TwitterApp
                         exception = ex;
                     }
                 }, uiTaskSheduler);
+#endif
 
                 var loadUserInfo = TwitterHelper.GetUserInfoAsync()
                     .ContinueWith(loadTask =>
@@ -225,7 +232,7 @@ namespace TwitterApp
                         orderby p.CreatedDate descending, p.Id
                         select p;
 
-                    foreach (var post in posts.Take(10).ToArray())
+                    foreach (var post in posts.ToArray())
                     {
                         TwitterUserViewModel author;
                         if (!authors.TryGetValue(post.AuthorId, out author))
@@ -240,9 +247,10 @@ namespace TwitterApp
                         }
                         vm.Posts.Add(new TwitterPostViewModel
                         {
+                            Id = post.TwitterId,
+                            Text = post.Text,
                             Author = author,
-                            CreatedDate = post.CreatedDate,
-                            Text = post.Text
+                            CreatedDate = post.CreatedDate
                         });
                     }
                 }

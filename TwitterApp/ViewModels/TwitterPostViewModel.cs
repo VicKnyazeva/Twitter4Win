@@ -31,6 +31,8 @@ namespace TwitterApp.ViewModels
             get { return this.Author != null ? this.Author.UserScreenName : "@author"; }
         }
 
+        public long Id { get; internal set; }
+
         public string Text { get; set; }
         public DateTime CreatedDate { get; set; }
         public int RetweetCount { get; set; }

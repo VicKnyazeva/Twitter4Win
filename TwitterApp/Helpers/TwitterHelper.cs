@@ -73,11 +73,17 @@ namespace TwitterApp.Helpers
             return Task.Run(GetUserInfo);
         }
 
-        public static List<TwitterPostViewModel> GetTweets()
+        public static List<TwitterPostViewModel> GetTweets(int? count, long? maxId)
         {
             try
             {
-                var source = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions()).ToList();
+                var options = new ListTweetsOnHomeTimelineOptions();
+                options.Count = count;
+                if (maxId.HasValue)
+                {
+                    options.MaxId = maxId.Value;
+                }
+                var source = service.ListTweetsOnHomeTimeline(options).ToList();
                 var result = new List<TwitterPostViewModel>();
                 if (source != null)
                 {
@@ -98,15 +104,16 @@ namespace TwitterApp.Helpers
         /// Асинхронное получение твитов
         /// </summary>
         /// <returns></returns>
-        public static Task<List<TwitterPostViewModel>> GetTweetsAsync()
+        public static Task<List<TwitterPostViewModel>> GetTweetsAsync(int? count, long? maxId)
         {
-            return Task.Run(GetTweets);
+            return Task.Run(() => GetTweets(count, maxId));
         }
 
         private static TwitterPostViewModel Convert(TwitterStatus src)
         {
             TwitterPostViewModel result = new TwitterPostViewModel(src.Text)
             {
+                Id = src.Id,
                 Text = src.Text,
                 CreatedDate = src.CreatedDate,
                 RetweetCount = src.RetweetCount,

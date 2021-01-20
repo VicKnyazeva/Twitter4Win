@@ -101,6 +101,10 @@
     <Compile Include="Migrations\201910081831022_LinkPostsWithUsers.designer.cs">
       <DependentUpon>201910081831022_LinkPostsWithUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911292114239_TwitterPostId.cs" />
+    <Compile Include="Migrations\201911292114239_TwitterPostId.designer.cs">
+      <DependentUpon>201911292114239_TwitterPostId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostsControl.xaml.cs">
       <DependentUpon>PostsControl.xaml</DependentUpon>
@@ -163,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910081831022_LinkPostsWithUsers.resx">
       <DependentUpon>201910081831022_LinkPostsWithUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911292114239_TwitterPostId.resx">
+      <DependentUpon>201911292114239_TwitterPostId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -18,6 +18,9 @@ namespace TwitterApp.EFClasses
         [Required, Key]
         public int Id { get; set; }
 
+        [Required, Index]
+        public long TwitterId { get; set; }
+
         [Required] //, ForeignKey("Author")
         public int AuthorId { get; set; }
 
